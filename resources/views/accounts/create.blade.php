@@ -28,7 +28,7 @@
                                 <div class="col-sm-5">
                                     <div class="input-group">
                                         <input type="text" class="form-control" id="alias" placeholder="Alias" name="alias" value="{{ old('alias') }}">
-                                        <span class="input-group-addon">&commat;{{ env('DOMAIN') }}</span>
+                                        <span class="input-group-addon">&commat;{{ env('MAILGUN_DOMAIN') }}</span>
                                     </div>
                                     @if ($errors->has('alias'))
                                         <span class="help-block">{{ $errors->first('alias') }}</span>
