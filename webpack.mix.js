@@ -11,5 +11,17 @@ let mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/assets/js/app.js', 'public/js')
-   .sass('resources/assets/sass/app.scss', 'public/css');
+mix.js([
+    'resources/assets/js/app.js',
+    'resources/assets/js/bootstrap-tagsinput.js',
+    'resources/assets/js/notify.min.js',
+    'resources/assets/js/pusher.min.js',
+    // 'node_modules/tinymce/tinymce.js'
+    // 'resources/assets/js/tinymce.min.js'
+], 'public/js/app.js')
+    .sass('resources/assets/sass/app.scss', 'public/css')
+    .styles([
+        'resources/assets/css/bootstrap-tagsinput.css',
+        'resources/assets/css/custom.css',
+    ], 'public/css/all.css')
+    .version();
