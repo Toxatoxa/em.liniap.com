@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\CallbackLog;
-use App\DeliveryEmail;
-use App\Events\EmailInfoUpdate;
+use App\Contracts\CallbackLog;
 use Illuminate\Http\Request;
 
 class CallBackController extends Controller
