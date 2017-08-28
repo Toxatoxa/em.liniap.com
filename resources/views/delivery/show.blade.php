@@ -82,6 +82,7 @@
                                     <th>Sent At</th>
                                     <th>Received At</th>
                                     <th>Opened At</th>
+                                    <th>Clicked At</th>
                                     <th>Error At</th>
                                 </tr>
                                 </thead>
@@ -95,6 +96,7 @@
                                         <td class="s_sent_at">{{($email->sent_at) ? $email->sent_at : '-'}}</td>
                                         <td class="s_received_at">{{($email->received_at) ? $email->received_at : '-'}}</td>
                                         <td class="s_opened_at">{{($email->opened_at) ? $email->opened_at : '-'}}</td>
+                                        <td class="s_clicked_at">{{($email->clicked_at) ? $email->clicked_at : '-'}}</td>
                                         <td class="s_error_at">{{($email->error_at) ? $email->error_at : '-'}}</td>
                                     </tr>
                                 @endforeach
@@ -120,6 +122,7 @@
                 $("tr#e" + data.email.id + " td.s_received_at").html((data.email.received_at) ? data.email.received_at : '-');
                 $("tr#e" + data.email.id + " td.s_opened_at").html((data.email.opened_at) ? data.email.opened_at : '-');
                 $("tr#e" + data.email.id + " td.s_opened_at").html((data.email.opened_at) ? data.email.opened_at : '-');
+                $("tr#e" + data.email.id + " td.s_clicked_at").html((data.email.clicked_at) ? data.email.clicked_at : '-');
                 $("tr#e" + data.email.id + " td.s_error_at").html((data.email.error_at) ? data.email.error_at : '-');
             }
         });
