@@ -31,6 +31,9 @@ class CallBackController extends Controller
                 case 'opened':
                     $callback->email->opened_at = carbon()->now();
                     break;
+                case 'clicked':
+                    $callback->email->clicked_at = carbon()->now();
+                    break;
                 default :
                     $callback->email->error_at = carbon()->now();
             }
