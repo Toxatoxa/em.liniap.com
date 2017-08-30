@@ -9,69 +9,80 @@
                                 href="{{route('delivery.create', ['copy_id'=>$delivery->id])}}">Copy</a></div>
 
                     <div class="panel-body">
-                        <form class="form-horizontal">
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">Sender</label>
-                                <div class="col-sm-10">
-                                    <p class="form-control-static">{{$delivery->account->name}}</p>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">Subject</label>
-                                <div class="col-sm-10">
-                                    <p class="form-control-static">{{$delivery->subject}}</p>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">Body</label>
-                                <div class="col-sm-10">
-                                    <button type="button" class="btn btn-link" data-toggle="modal"
-                                            data-target="#myModal">Show Text
-                                    </button>
-                                    <!-- Modal -->
-                                    <div id="myModal" class="modal fade" role="dialog">
-                                        <div class="modal-dialog modal-lg">
 
-                                            <!-- Modal content-->
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close"
-                                                            data-dismiss="modal">&times;</button>
-                                                    <h4 class="modal-title">Body</h4>
-                                                </div>
-                                                <div class="modal-body">
-                                                    {!! $delivery->body !!}
-                                                </div>
-                                            </div>
 
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3>Info</h3>
+                                <form class="form-horizontal">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">Sender</label>
+                                        <div class="col-sm-8">
+                                            <p class="form-control-static">{{$delivery->account->name}}</p>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">Created At</label>
-                                <div class="col-sm-10">
-                                    <p class="form-control-static">{{$delivery->created_at}}</p>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">Sent At</label>
-                                <div class="col-sm-10">
-                                    <p class="form-control-static">{{($delivery->sent_at) ? $delivery->sent_at : '-'}}</p>
-                                </div>
-                            </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">Subject</label>
+                                        <div class="col-sm-8">
+                                            <p class="form-control-static">{{$delivery->subject}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">Body</label>
+                                        <div class="col-sm-8">
+                                            <button type="button" class="btn btn-link" data-toggle="modal"
+                                                    data-target="#myModal">Show Text
+                                            </button>
+                                            <!-- Modal -->
+                                            <div id="myModal" class="modal fade" role="dialog">
+                                                <div class="modal-dialog modal-lg">
 
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">Errors</label>
-                                <div class="col-sm-10">
-                                    <p class="form-control-static">
-                                        <a href="{{route('delivery.errors', $delivery->id)}}">Show Errors</a>
-                                        <a href="{{route('delivery.resend', $delivery->id)}}">Re-send</a>
-                                    </p>
-                                </div>
-                            </div>
+                                                    <!-- Modal content-->
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close"
+                                                                    data-dismiss="modal">&times;
+                                                            </button>
+                                                            <h4 class="modal-title">Body</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            {!! $delivery->body !!}
+                                                        </div>
+                                                    </div>
 
-                        </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">Created At</label>
+                                        <div class="col-sm-8">
+                                            <p class="form-control-static">{{$delivery->created_at}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">Sent At</label>
+                                        <div class="col-sm-8">
+                                            <p class="form-control-static">{{($delivery->sent_at) ? $delivery->sent_at : '-'}}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">Errors</label>
+                                        <div class="col-sm-8">
+                                            <p class="form-control-static">
+                                                <a href="{{route('delivery.errors', $delivery->id)}}">Show Errors</a>
+                                                <a href="{{route('delivery.resend', $delivery->id)}}">Re-send</a>
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                </form>
+                            </div>
+                            <div class="col-md-6">
+                                @include('delivery._statistic')
+                            </div>
+                        </div>
                         @if($delivery->emails)
                             <table class="table table-hover">
                                 <thead>
@@ -83,7 +94,7 @@
                                     <th>Received At</th>
                                     <th>Opened At</th>
                                     <th>Clicked At</th>
-                                    <th>Error At</th>
+                                    <th>Errors</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -92,12 +103,30 @@
                                     <tr id="e{{$email->id}}">
                                         <th>{{$email->id}}</th>
                                         <td>{{$email->recipient_email}}</td>
-                                        <td class="s_created_at">{{$email->created_at}}</td>
+                                        <td class="s_created_at">
+                                            <spam class="hint--bottom"
+                                                  aria-label="{{$email->created_at}}">{{$email->created_at->format('Y-m-d')}}</spam>
+                                        </td>
                                         <td class="s_sent_at">{{($email->sent_at) ? $email->sent_at : '-'}}</td>
                                         <td class="s_received_at">{{($email->received_at) ? $email->received_at : '-'}}</td>
                                         <td class="s_opened_at">{{($email->opened_at) ? $email->opened_at : '-'}}</td>
                                         <td class="s_clicked_at">{{($email->clicked_at) ? $email->clicked_at : '-'}}</td>
-                                        <td class="s_error_at">{{($email->error_at) ? $email->error_at : '-'}}</td>
+                                        <td class="s_error_at">
+                                            <ul>
+                                                @if($email->error_at)
+                                                    <li>Sending: {{($email->error_at)}}</li>
+                                                @elseif($email->dropped_at)
+                                                    <li>Was dropped: {{($email->dropped_at)}}</li>
+                                                @elseif($email->bounced_at)
+                                                    <li>Was bounced: {{($email->bounced_at)}}</li>
+                                                @elseif($email->complained_at)
+                                                    <li>Was complained: {{($email->complained_at)}}</li>
+                                                @elseif($email->unsubscribed_at)
+                                                    <li>Was unsubscribed: {{($email->unsubscribed_at)}}</li>
+                                                @endif
+                                            </ul>
+
+                                        </td>
                                     </tr>
                                 @endforeach
                                 </tbody>

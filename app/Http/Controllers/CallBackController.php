@@ -34,6 +34,18 @@ class CallBackController extends Controller
                 case 'clicked':
                     $callback->email->clicked_at = carbon()->now();
                     break;
+                case 'dropped':
+                    $callback->email->dropped_at = carbon()->now();
+                    break;
+                case 'bounced':
+                    $callback->email->bounced_at = carbon()->now();
+                    break;
+                case 'complained':
+                    $callback->email->complained_at = carbon()->now();
+                    break;
+                case 'unsubscribed':
+                    $callback->email->unsubscribed_at = carbon()->now();
+                    break;
                 default :
                     $callback->email->error_at = carbon()->now();
             }

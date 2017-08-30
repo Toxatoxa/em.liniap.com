@@ -23,5 +23,6 @@ mix.js([
     .styles([
         'resources/assets/css/bootstrap-tagsinput.css',
         'resources/assets/css/custom.css',
+        'resources/assets/css/hint.min.css'
     ], 'public/css/all.css')
     .version();

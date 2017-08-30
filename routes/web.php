@@ -24,4 +24,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/delivery/{id}/errors', 'DeliveryController@errors')->name('delivery.errors');
     Route::get('/delivery/{id}/resend', 'DeliveryController@resend')->name('delivery.resend');
     Route::resource('/accounts', 'AccountsController');
+
+    Route::post('/upload/images', 'UploadController@images');
 });

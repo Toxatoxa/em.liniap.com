@@ -30,3 +30,7 @@
     margin: 2px;
     width: 60px;
 }
+
+span.help-block.inline{
+    display: inline;
+}
