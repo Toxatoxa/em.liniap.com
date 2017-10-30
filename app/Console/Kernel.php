@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         Commands\StartSendEmails::class,
         Commands\CheckItunesRssFeed::class,
+        Commands\GetDeveloperWebSite::class,
     ];
 
     /**
@@ -28,6 +29,9 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('check:itunes_rss')
             ->hourly();
+
+        $schedule->command('get:dev_site')
+            ->everyTenMinutes();
     }
 
     /**

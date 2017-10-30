@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use App\Contracts\AsApplication;
 use App\Contracts\AsCountry;
-use App\Contracts\AsDevelopers;
+use App\Contracts\AsDeveloper;
 use App\Contracts\AsGenre;
 use Illuminate\Console\Command;
 
@@ -49,8 +49,8 @@ class CheckItunesRssFeed extends Command
                     continue;
                 }
 
-                if (!$developer = AsDevelopers::where('as_id', $result['artistId'])->first()) {
-                    $developer = AsDevelopers::create([
+                if (!$developer = AsDeveloper::where('as_id', $result['artistId'])->first()) {
+                    $developer = AsDeveloper::create([
                         'as_id' => $result['artistId'],
                         'name'  => $result['artistName'],
                         'url'   => $result['artistUrl'],
