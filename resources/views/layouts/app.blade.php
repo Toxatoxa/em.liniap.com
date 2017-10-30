@@ -49,6 +49,7 @@
                         <li><a href="{{ route('delivery.create') }}">Create</a></li>
                         <li><a href="{{ route('delivery.index') }}">Deliveries</a></li>
                         <li><a href="{{ route('accounts.index') }}">Accounts</a></li>
+                        <li><a href="{{ route('developers.index') }}">Developers</a></li>
                     @endif
                 </ul>
 

@@ -24,8 +24,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/delivery/{id}/errors', 'DeliveryController@errors')->name('delivery.errors');
     Route::get('/delivery/{id}/resend', 'DeliveryController@resend')->name('delivery.resend');
     Route::resource('/accounts', 'AccountsController');
-
-//    Route::get('/developers', 'DevelopersController');
+    Route::resource('/developers', 'DevelopersController', ['only' => ['index', 'update']]);
+    Route::get('/developers/{id}/send', 'DevelopersController@send')->name('developers.send');
 
     Route::post('/upload/images', 'UploadController@images');
 });

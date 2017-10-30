@@ -11,6 +11,8 @@ class AsDeveloper extends Model
         'as_id',
         'name',
         'url',
+        'email',
+        'site',
     ];
 
     public function applications()
