@@ -23,6 +23,7 @@
                                     <th>Email</th>
                                     <th>Emailed At</th>
                                     <th>Created At</th>
+                                    <th>Apps</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -30,7 +31,6 @@
                                     <tr>
                                         <th>
                                             {{$dev->id}}
-                                            {{--<a href="{{ route('accounts.show', $account->id) }}">{{$account->id}}</a>--}}
                                         </th>
                                         <td>
                                             <a target="_blank" href="{{$dev->url}}">{{$dev->as_id}}</a>
@@ -73,6 +73,14 @@
                                             @endif
                                         </td>
                                         <td>{{$dev->created_at}}</td>
+                                        <td>
+                                            @if($dev->applications)
+                                                @foreach($dev->applications as $application)
+                                                    <a target="_blank"
+                                                       href="{{$application->url}}">{{$application->country_code}}</a>
+                                                @endforeach
+                                            @endif
+                                        </td>
                                     </tr>
                                 @endforeach
                                 </tbody>
