@@ -35,49 +35,56 @@ class CheckItunesRssFeed extends Command
         $countries = AsCountry::all();
         $genres = AsGenre::all()->pluck('genre_id')->toArray();
 
-        foreach ($countries as $country) {
-            $url = 'https://rss.itunes.apple.com/api/v1/' . $country->code . '/ios-apps/new-apps-we-love/all/200/explicit.json';
-            $response = json_decode(file_get_contents($url), true);
+        $categories = [
+            'new-apps-we-love',
+            'new-games-we-love',
+        ];
 
-            if (!$response || !isset($response['feed']['results'])) {
-                continue;
-            }
+        foreach ($categories as $category) {
+            foreach ($countries as $country) {
+                $url = 'https://rss.itunes.apple.com/api/v1/' . $country->code . '/ios-apps/' . $category . '/all/200/explicit.json';
+                $response = json_decode(file_get_contents($url), true);
 
-            foreach ($response['feed']['results'] as $result) {
-                $id = $result['id'];
-                if (AsApplication::where('as_id', $id)->first()) {
+                if (!$response || !isset($response['feed']['results'])) {
                     continue;
                 }
 
-                if (!$developer = AsDeveloper::where('as_id', $result['artistId'])->first()) {
-                    $developer = AsDeveloper::create([
-                        'as_id' => $result['artistId'],
-                        'name'  => $result['artistName'],
-                        'url'   => $result['artistUrl'],
-                    ]);
-                }
-
-                $application = $developer->applications()->create([
-                    'as_id'        => $id,
-                    'name'         => $result['name'],
-                    'url'          => $result['url'],
-                    'country_code' => $country->code,
-                    'release_date' => $result['releaseDate'],
-                ]);
-
-                if (isset($result['genres']) && $result['genres']) {
-                    $appGenres = [];
-                    foreach ($result['genres'] as $genre) {
-                        $appGenres[] = $genre['genreId'];
-                        if (!in_array($genre['genreId'], $genres)) {
-                            AsGenre::create([
-                                'genre_id' => $genre['genreId'],
-                                'name'     => $genre['name'],
-                                'url'      => $genre['url'],
-                            ]);
-                        }
+                foreach ($response['feed']['results'] as $result) {
+                    $id = $result['id'];
+                    if (AsApplication::where('as_id', $id)->first()) {
+                        continue;
                     }
-                    $application->genres()->attach($appGenres);
+
+                    if (!$developer = AsDeveloper::where('as_id', $result['artistId'])->first()) {
+                        $developer = AsDeveloper::create([
+                            'as_id' => $result['artistId'],
+                            'name'  => $result['artistName'],
+                            'url'   => $result['artistUrl'],
+                        ]);
+                    }
+
+                    $application = $developer->applications()->create([
+                        'as_id'        => $id,
+                        'name'         => $result['name'],
+                        'url'          => $result['url'],
+                        'country_code' => $country->code,
+                        'release_date' => $result['releaseDate'],
+                    ]);
+
+                    if (isset($result['genres']) && $result['genres']) {
+                        $appGenres = [];
+                        foreach ($result['genres'] as $genre) {
+                            $appGenres[] = $genre['genreId'];
+                            if (!in_array($genre['genreId'], $genres)) {
+                                AsGenre::create([
+                                    'genre_id' => $genre['genreId'],
+                                    'name'     => $genre['name'],
+                                    'url'      => $genre['url'],
+                                ]);
+                            }
+                        }
+                        $application->genres()->attach($appGenres);
+                    }
                 }
             }
         }
