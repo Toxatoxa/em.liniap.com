@@ -47,5 +47,10 @@ class GetDeveloperWebSite extends Command
             }
 
         }
+
+        if ($developer->site === null) {
+            $developer->site = '';
+            $developer->save();
+        }
     }
 }
