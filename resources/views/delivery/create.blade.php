@@ -17,14 +17,17 @@
                                     @if($accounts->count())
                                         <select class="form-control" name="account_id" id="account_id">
                                             @foreach($accounts as $account)
-                                                <option {{ ($account->id == old('account_id') || $account->id == $delivery->account_id) ? 'selected' : '' }} value="{{$account->id}}">{{$account->name}} ({{$account->email}})</option>
+                                                <option {{ ($account->id == old('account_id') || $account->id == $delivery->account_id) ? 'selected' : '' }} value="{{$account->id}}">{{$account->name}}
+                                                    ({{$account->email}})
+                                                </option>
                                             @endforeach
                                         </select>
                                         @if ($errors->has('account_id'))
                                             <span class="help-block">{{ $errors->first('account_id') }}</span>
                                         @endif
                                     @else
-                                        <p class="form-control-static"><a href="{{ route('accounts.create') }}">Add an account</a></p>
+                                        <p class="form-control-static"><a href="{{ route('accounts.create') }}">Add an
+                                                account</a></p>
                                     @endif
                                 </div>
                             </div>
@@ -74,32 +77,5 @@
             </div>
         </div>
     </div>
-@endsection
-
-@section('script')
-    <link href="{{ asset('js/tinymce/skins/lightgray/skin.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('js/tinymce/skins/lightgray/content.min.css') }}" rel="stylesheet">
-    <script src="{{ asset('js/tinymce/tinymce.min.js') }}"></script>
-    <script src="{{ asset('js/tinymce/themes/modern/theme.min.js') }}"></script>
-    <script>tinymce.init({
-            selector: 'textarea',
-            menubar: false,
-            plugins: [
-                'advlist autolink lists link image charmap print preview anchor',
-                'searchreplace visualblocks code fullscreen',
-                'insertdatetime media table contextmenu paste code'
-            ],
-            toolbar: 'undo redo | insert | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
-
-            // without images_upload_url set, Upload tab won't show up
-            images_upload_url: '/upload/images',
-//
-//            // we override default upload handler to simulate successful upload
-//            images_upload_handler: function (blobInfo, success, failure) {
-//                setTimeout(function() {
-//                    // no matter what you upload, we will turn it into TinyMCE logo :)
-//                    success('http://moxiecode.cachefly.net/tinymce/v9/images/logo.png');
-//                }, 2000);
-//            }
-    });</script>
+    @include('parts.tinymce')
 @endsection

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Contracts\Delivery;
 use App\Contracts\DeliveryEmail;
+use App\Contracts\Template;
 use App\Jobs\SendEmailJob;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -25,12 +26,21 @@ class DeliveryController extends Controller
         $delivery = ($request->get('copy_id')) ? Delivery::findOrFail($request->get('copy_id')) : new Delivery();
         $accounts = user()->accounts;
 
+        if ($request->get('template_id')) {
+            $template = Template::find($request->get('template_id'));
+            if ($template) {
+                $delivery->subject = $template->subject;
+                $delivery->body = $template->body;
+            }
+
+        }
+
         return view('delivery.create', compact('delivery', 'accounts'));
     }
 
     public function show(Delivery $delivery)
     {
-        $stat  = DB::table('delivery_emails')->select(DB::raw('count(id) as count_all,
+        $stat = DB::table('delivery_emails')->select(DB::raw('count(id) as count_all,
                 sum(if(sent_at is null, 0, 1)) as count_sent,
                 sum(if(received_at is null, 0, 1)) as count_received,
                 sum(if(opened_at is null, 0, 1)) as count_opened,

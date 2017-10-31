@@ -26,6 +26,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('/accounts', 'AccountsController');
     Route::resource('/developers', 'DevelopersController', ['only' => ['index', 'update']]);
     Route::get('/developers/{id}/send', 'DevelopersController@send')->name('developers.send');
+    Route::resource('/templates', 'TemplatesController');
+    Route::post('/upload/image', 'UploadController@image');
 
     Route::post('/upload/images', 'UploadController@images');
 });
