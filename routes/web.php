@@ -26,6 +26,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('/accounts', 'AccountsController');
     Route::resource('/developers', 'DevelopersController', ['only' => ['index', 'update']]);
     Route::get('/developers/{id}/send', 'DevelopersController@send')->name('developers.send');
+    Route::get('/developers/{id}/change_status/{status}', 'DevelopersController@changeStatus')->name('developers.changeStatus');
     Route::resource('/templates', 'TemplatesController');
     Route::post('/upload/image', 'UploadController@image');
 

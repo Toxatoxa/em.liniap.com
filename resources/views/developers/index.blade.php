@@ -9,7 +9,20 @@
 
                     <div class="panel-body">
 
-                        <div id="test"></div>
+                        {{--<div id="test"></div>--}}
+
+                        <form class="form-inline" method="GET" action="{{ route('developers.index') }}">
+                            <div class="form-group">
+                                <select class="form-control" name="status" id="status">
+                                    @foreach($statuses as $status)
+                                        <option {{ (request()->get('status') == $status) ? 'selected' : '' }} value="{{$status}}">{{$status}}</option>
+                                    @endforeach
+                                </select>
+                                {{--<input type="text" style="width: 250px;" class="form-control" name="search" id="search"--}}
+                                {{--placeholder="Search by ID, Name or Email" value="{{ request('search') }}">--}}
+                                <button type="submit" class="btn btn-primary">Filter</button>
+                            </div>
+                        </form>
 
                         @if($devs)
                             {{--<p>Count: {{$count}}</p>--}}
@@ -21,9 +34,10 @@
                                     <th>Name</th>
                                     <th>Web Site</th>
                                     <th>Email</th>
-                                    <th>Emailed At</th>
                                     <th>Created At</th>
                                     <th>Apps</th>
+                                    <th>Emailed At</th>
+                                    <th>Actions</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -54,22 +68,12 @@
                                                     <input type="text" class="form-control" id="email"
                                                            placeholder="email@gmail.com"
                                                            name="email" value="{{ old('email') }}">
+                                                    <button class="btn btn-success btn-sm" type="submit">Add</button>
+
                                                     @if ($errors->has('email'))
                                                         <span class="help-block">{{ $errors->first('email') }}</span>
                                                     @endif
-
-
-                                                    <button class="btn btn-success" type="submit">Add</button>
                                                 </form>
-                                            @endif
-
-                                        </td>
-                                        <td>
-                                            @if($dev->emailed_at)
-                                                {{$dev->emailed_at}}
-                                            @else
-                                                <a href="{{ route('developers.send', $dev->id) }}"
-                                                   class="btn btn-primary" type="submit">Send</a>
                                             @endif
                                         </td>
                                         <td>{{$dev->created_at}}</td>
@@ -80,6 +84,20 @@
                                                        href="{{$application->url}}">{{$application->country_code}}</a>
                                                 @endforeach
                                             @endif
+                                        </td>
+                                        <td>
+                                            @if($dev->emailed_at)
+                                                {{$dev->emailed_at}}
+                                            @else
+                                                <a href="{{ route('developers.send', $dev->id) }}"
+                                                   class="btn btn-primary btn-sm" type="submit">Email</a>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('developers.changeStatus', ['id' => $dev->id, 'status'=> 'en']) }}"
+                                               class="btn btn-default btn-sm" type="submit">en</a>
+                                            <a href="{{ route('developers.changeStatus', ['id' => $dev->id, 'status'=> 'hidden']) }}"
+                                               class="btn btn-danger btn-sm" type="submit">Hide</a>
                                         </td>
                                     </tr>
                                 @endforeach
