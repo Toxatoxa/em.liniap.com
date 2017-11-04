@@ -50,7 +50,7 @@ class DevelopersController extends Controller
     public function send($id)
     {
 
-        return redirect(route('developers.index'))
+        return redirect()->back()
             ->with('success', 'Developer has been successfully emailed.');
     }
 
@@ -64,7 +64,7 @@ class DevelopersController extends Controller
         $dev->status = $status;
         $dev->save();
 
-        return redirect(route('developers.index'))
+        return redirect()->back()
             ->with('success', 'Developer has been successfully hidden.');
     }
 
