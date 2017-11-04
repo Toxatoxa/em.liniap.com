@@ -6,6 +6,7 @@ use App\Contracts\AsApplication;
 use App\Contracts\AsCountry;
 use App\Contracts\AsDeveloper;
 use App\Contracts\AsGenre;
+use App\Contracts\Feed;
 use Illuminate\Console\Command;
 
 class CheckItunesRssFeed extends Command
@@ -35,14 +36,11 @@ class CheckItunesRssFeed extends Command
         $countries = AsCountry::all();
         $genres = AsGenre::all()->pluck('genre_id')->toArray();
 
-        $categories = [
-            'new-apps-we-love',
-            'new-games-we-love',
-        ];
+        $feedTypes = Feed::all();
 
-        foreach ($categories as $category) {
+        foreach ($feedTypes as $feedId => $feedString) {
             foreach ($countries as $country) {
-                $url = 'https://rss.itunes.apple.com/api/v1/' . $country->code . '/ios-apps/' . $category . '/all/200/explicit.json';
+                $url = 'https://rss.itunes.apple.com/api/v1/' . $country->code . '/ios-apps/' . $feedString . '/all/200/explicit.json';
                 $response = json_decode(file_get_contents($url), true);
 
                 if (!$response || !isset($response['feed']['results'])) {
@@ -55,20 +53,24 @@ class CheckItunesRssFeed extends Command
                         continue;
                     }
 
+                    $developer = null;
+
                     if (!$developer = AsDeveloper::where('as_id', $result['artistId'])->first()) {
                         $developer = AsDeveloper::create([
-                            'as_id' => $result['artistId'],
-                            'name'  => $result['artistName'],
-                            'url'   => $result['artistUrl'],
+                            'as_id'         => $result['artistId'],
+                            'name'          => $result['artistName'],
+                            'url'           => $result['artistUrl'],
+                            'found_feed_id' => $feedId,
                         ]);
                     }
 
                     $application = $developer->applications()->create([
-                        'as_id'        => $id,
-                        'name'         => $result['name'],
-                        'url'          => $result['url'],
-                        'country_code' => $country->code,
-                        'release_date' => $result['releaseDate'],
+                        'as_id'         => $id,
+                        'name'          => $result['name'],
+                        'url'           => $result['url'],
+                        'country_code'  => $country->code,
+                        'found_feed_id' => $feedId,
+                        'release_date'  => $result['releaseDate'],
                     ]);
 
                     if (isset($result['genres']) && $result['genres']) {
@@ -86,6 +88,8 @@ class CheckItunesRssFeed extends Command
                         $application->genres()->attach($appGenres);
                     }
                 }
+
+                sleep(2);
             }
         }
     }

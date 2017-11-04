@@ -16,7 +16,7 @@ class CreateAsDevelopersTable extends Migration
     {
         Schema::create('as_developers', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('as_id')->unsigned()->index();
+            $table->string('as_id', 50)->index();
             $table->string('name');
             $table->string('url');
             $table->string('site')->nullable()->default(null);

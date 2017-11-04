@@ -12,6 +12,7 @@ class AsApplication extends Model
         'name',
         'url',
         'country_code',
+        'found_feed_id',
         'release_date',
     ];
 

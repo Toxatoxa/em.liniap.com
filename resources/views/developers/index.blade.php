@@ -18,8 +18,14 @@
                                         <option {{ (request()->get('status') == $status) ? 'selected' : '' }} value="{{$status}}">{{$status}}</option>
                                     @endforeach
                                 </select>
-                                {{--<input type="text" style="width: 250px;" class="form-control" name="search" id="search"--}}
-                                {{--placeholder="Search by ID, Name or Email" value="{{ request('search') }}">--}}
+                            </div>
+
+                            <div class="form-group">
+                                <label for="needs_email">Needs Email</label>
+                                <input {{ (request()->get('needs_email')) ? 'checked' : '' }} type="checkbox"
+                                       name="needs_email" value="1">
+                            </div>
+                            <div class="form-group">
                                 <button type="submit" class="btn btn-primary">Filter</button>
                             </div>
                         </form>
@@ -31,11 +37,11 @@
                                 <tr>
                                     <th>#</th>
                                     <th>iTunes #</th>
-                                    <th>Name</th>
-                                    <th>Web Site</th>
+                                    <th>Feed</th>
+                                    <th style="width: 200px">Name</th>
                                     <th>Email</th>
                                     <th>Created At</th>
-                                    <th>Apps</th>
+                                    <th style="width: 50px">Apps</th>
                                     <th>Emailed At</th>
                                     <th>Actions</th>
                                 </tr>
@@ -43,29 +49,33 @@
                                 <tbody>
                                 @foreach($devs as $dev)
                                     <tr>
-                                        <th>
-                                            {{$dev->id}}
-                                        </th>
+                                        <th>{{$dev->id}}</th>
+
                                         <td>
                                             <a target="_blank" href="{{$dev->url}}">{{$dev->as_id}}</a>
                                         </td>
-                                        <td>{{$dev->name}}</td>
+                                        <td>{{$dev->found_feed}}</td>
                                         <td>
                                             @if($dev->site)
-                                                <a target="_blank"
-                                                   href="{{$dev->site}}">{{str_limit($dev->site, 30)}}</a>
+                                                <spam class="hint--bottom"
+                                                      aria-label="{{$dev->site}}">
+                                                    <a target="_blank" href="{{$dev->site}}">{{$dev->name}}</a>
+                                                </spam>
+                                            @else
+                                                {{$dev->name}}
                                             @endif
                                         </td>
                                         <td>
                                             @if($dev->email)
                                                 {{$dev->email}}
                                             @else
-                                                <form class="form-horizontal" method="POST"
+                                                <form class="form-inline" method="POST"
                                                       action="{{ route('developers.update', $dev->id) }}">
                                                     {!! csrf_field() !!}
                                                     {!! method_field('PUT') !!}
 
-                                                    <input type="text" class="form-control" id="email"
+                                                    <input style="width: 130px" type="text" class="form-control"
+                                                           id="email"
                                                            placeholder="email@gmail.com"
                                                            name="email" value="{{ old('email') }}">
                                                     <button class="btn btn-success btn-sm" type="submit">Add</button>
@@ -76,7 +86,7 @@
                                                 </form>
                                             @endif
                                         </td>
-                                        <td>{{$dev->created_at}}</td>
+                                        <td>{{$dev->created_at->format('d.m.Y')}}</td>
                                         <td>
                                             @if($dev->applications)
                                                 @foreach($dev->applications as $application)
@@ -103,6 +113,7 @@
                                 @endforeach
                                 </tbody>
                             </table>
+                            {{$devs->appends(request()->all())->links()}}
                         @endif
 
                     </div>

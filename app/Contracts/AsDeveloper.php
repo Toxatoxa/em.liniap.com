@@ -19,6 +19,7 @@ class AsDeveloper extends Model
         'url',
         'email',
         'site',
+        'found_feed_id',
     ];
 
     public function applications()
@@ -36,7 +37,17 @@ class AsDeveloper extends Model
 
         $query->where('status', $status);
 
+        if (request()->get('needs_email')) {
+            $query->whereNull('email')
+                ->whereNotNull('site');
+        }
+
         return $query;
+    }
+
+    public function getFoundFeedAttribute()
+    {
+        return Feed::nameById($this->found_feed_id);
     }
 
     public static function statuses()

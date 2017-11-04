@@ -32,6 +32,10 @@ class GetDeveloperWebSite extends Command
     {
         $developer = AsDeveloper::with('applications')->whereNull('site')->first();
 
+        if (!$developer) {
+            return;
+        }
+
         foreach ($developer->applications as $application) {
             $client = new Client();
             $crawler = $client->request('GET', $application->url);

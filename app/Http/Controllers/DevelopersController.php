@@ -14,7 +14,8 @@ class DevelopersController extends Controller
             $query->where('country_code', 'ru');
         })
             ->filter()
-            ->get();
+            ->orderBy('found_feed_id')
+            ->paginate(20);
 
         $statuses = AsDeveloper::statuses();
 
