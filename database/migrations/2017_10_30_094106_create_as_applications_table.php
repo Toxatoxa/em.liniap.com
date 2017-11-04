@@ -16,7 +16,7 @@ class CreateAsApplicationsTable extends Migration
     {
         Schema::create('as_applications', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('as_id')->unsigned()->index();
+            $table->string('as_id')->index();
             $table->string('name');
             $table->string('url');
             $table->string('developer_id');

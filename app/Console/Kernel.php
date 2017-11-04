@@ -28,7 +28,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('check:itunes_rss')
-            ->hourly();
+            ->daily();
 
         $schedule->command('get:dev_site')
             ->everyTenMinutes();
