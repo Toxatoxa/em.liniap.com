@@ -39,7 +39,7 @@
                                     <th>iTunes #</th>
                                     <th>Feed</th>
                                     <th style="width: 200px">Name</th>
-                                    <th>Email</th>
+                                    <th>Email / Contact URL</th>
                                     <th>Created At</th>
                                     <th style="width: 50px">Apps</th>
                                     <th>Emailed At</th>
@@ -68,6 +68,10 @@
                                         <td>
                                             @if($dev->email)
                                                 {{$dev->email}}
+                                            @elseif($dev->contact_url)
+                                                <a target="_blank"
+                                                   href="{{$dev->contact_url}}">{{str_limit($dev->contact_url, 30)}}</a>
+
                                             @else
                                                 <form class="form-inline" method="POST"
                                                       action="{{ route('developers.update', $dev->id) }}">

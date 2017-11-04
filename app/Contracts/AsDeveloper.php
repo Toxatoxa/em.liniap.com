@@ -20,6 +20,7 @@ class AsDeveloper extends Model
         'email',
         'site',
         'found_feed_id',
+        'contact_url',
     ];
 
     public function applications()
@@ -38,8 +39,9 @@ class AsDeveloper extends Model
         $query->where('status', $status);
 
         if (request()->get('needs_email')) {
-            $query->whereNull('email')
-                ->whereNotNull('site');
+            $query->whereNotNull('site')
+                ->whereNull('email')
+                ->whereNull('contact_url');
         }
 
         return $query;

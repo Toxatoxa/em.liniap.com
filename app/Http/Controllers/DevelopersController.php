@@ -25,14 +25,24 @@ class DevelopersController extends Controller
     public function update($id, Request $request)
     {
         $this->validate($request, [
-            'email' => 'required|email',
+            'email' => 'required',
         ]);
 
         $dev = AsDeveloper::findOrFail($id);
 
-        $dev->update($request->all());
+        if (filter_var($request->get('email'), FILTER_VALIDATE_EMAIL)) {
+            $updateArray = [
+                'email' => $request->get('email')
+            ];
+        } else {
+            $updateArray = [
+                'contact_url' => $request->get('email')
+            ];
+        }
 
-        return redirect(route('developers.index'))
+        $dev->update($updateArray);
+
+        return redirect()->back()
             ->with('success', 'Developer has been successfully updated.');
 
     }
