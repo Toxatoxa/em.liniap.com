@@ -27,6 +27,7 @@
                             </div>
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary">Filter</button>
+                                <a href="{{ route('developers.findContacts') }}" type="submit" class="btn btn-default">Find Contacts</a>
                             </div>
                         </form>
 

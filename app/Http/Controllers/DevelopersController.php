@@ -68,4 +68,24 @@ class DevelopersController extends Controller
             ->with('success', 'Developer has been successfully hidden.');
     }
 
+    public function findContacts()
+    {
+        $dev = AsDeveloper::whereHas('applications', function ($query) {
+            $query->where('country_code', 'ru');
+        })
+            ->where('status', 'new')
+            ->whereNotNull('site')
+            ->whereNull('email')
+            ->whereNull('contact_url')
+            ->orderBy('found_feed_id')
+            ->first();
+
+        if(!$dev) {
+            return redirect('developers')
+                ->with('success', 'Developer has been successfully hidden.');
+        }
+
+        return view('developers.find_contacts', compact('dev'));
+    }
+
 }
