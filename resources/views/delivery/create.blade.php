@@ -36,7 +36,7 @@
                                 <div class="col-sm-6">
                                     <input type="text" data-role="tagsinput" class="form-control" id="recipients"
                                            name="recipients"
-                                           value="{{ (old('recipients')) ? str_replace(',', ' ', old('recipients')) : '' }}">
+                                           value="{{ (old('recipients')) ? str_replace(',', ' ', old('recipients')) : implode(',', $recipients) }}">
                                     @if ($errors->has('recipients'))
                                         <span class="help-block">{{ $errors->first('recipients') }}</span>
                                     @endif

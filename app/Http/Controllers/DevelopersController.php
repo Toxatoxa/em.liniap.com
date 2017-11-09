@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Contracts\AsDeveloper;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class DevelopersController extends Controller
@@ -10,37 +11,61 @@ class DevelopersController extends Controller
 
     public function index()
     {
-        $devs = AsDeveloper::whereHas('applications', function ($query) {
-            $query->where('country_code', 'ru');
-        })
-            ->filter()
-            ->orderBy('found_feed_id')
+//        $devs = AsDeveloper::whereHas('applications', function ($query) {
+//            $query->where('country_code', 'ru');
+//        })
+//            ->filter()
+//            ->orderBy('found_feed_id')
+//            ->paginate(20);
+
+        $devs = AsDeveloper::filter()
+            ->orderBy('id')
             ->paginate(20);
 
-        $statuses = AsDeveloper::statuses();
+        $statuses = AsDeveloper::allStatuses();
 
         return view('developers.index', compact('devs', 'statuses'));
+    }
+
+    public function create()
+    {
+        return view('developers.create');
+    }
+
+    public function store()
+    {
+        $this->validate(request(), [
+            'name'          => 'required',
+            'language_code' => 'required',
+            'email'         => 'email',
+        ]);
+
+        $attributes = request()->all();
+        AsDeveloper::create($attributes);
+
+        return redirect(route('developers.index'))
+            ->with('success', 'Developer has been successfully created.');
     }
 
     public function update($id, Request $request)
     {
         $this->validate($request, [
-            'email' => 'required',
+            'name'          => 'required',
+            'language_code' => 'required',
+            'email'         => 'email',
         ]);
 
         $dev = AsDeveloper::findOrFail($id);
 
-        if (filter_var($request->get('email'), FILTER_VALIDATE_EMAIL)) {
-            $updateArray = [
-                'email' => $request->get('email')
-            ];
-        } else {
-            $updateArray = [
-                'contact_url' => $request->get('email')
-            ];
-        }
-
-        $dev->update($updateArray);
+        $dev->update([
+            'name'            => $request->get('name'),
+            'contact_persona' => $request->get('contact_persona'),
+            'site'            => $request->get('site'),
+            'language_code'   => $request->get('language_code'),
+            'email'           => $request->get('email'),
+            'contact_url'     => $request->get('contact_url'),
+            'checked_at'      => ($request->get('next')) ? Carbon::now() : null,
+        ]);
 
         return redirect()->back()
             ->with('success', 'Developer has been successfully updated.');
@@ -54,18 +79,26 @@ class DevelopersController extends Controller
             ->with('success', 'Developer has been successfully emailed.');
     }
 
-    public function changeStatus($id, $status)
+//    public function changeStatus($id, $status)
+//    {
+//        if (!in_array($status, AsDeveloper::statuses())) {
+//            abort(404);
+//        }
+//
+//        $dev = AsDeveloper::findOrFail($id);
+//        $dev->status = $status;
+//        $dev->save();
+//
+//        return redirect()->back()
+//            ->with('success', 'Developer has been successfully hidden.');
+//    }
+
+    public function edit($id)
     {
-        if (!in_array($status, AsDeveloper::statuses())) {
-            abort(404);
-        }
-
         $dev = AsDeveloper::findOrFail($id);
-        $dev->status = $status;
-        $dev->save();
+        $edit = true;
 
-        return redirect()->back()
-            ->with('success', 'Developer has been successfully hidden.');
+        return view('developers.find_contacts', compact('dev', 'edit'));
     }
 
     public function findContacts()
@@ -73,19 +106,57 @@ class DevelopersController extends Controller
         $dev = AsDeveloper::whereHas('applications', function ($query) {
             $query->where('country_code', 'ru');
         })
-            ->where('status', 'new')
-            ->whereNotNull('site')
-            ->whereNull('email')
-            ->whereNull('contact_url')
+            ->whereNull('checked_at')
             ->orderBy('found_feed_id')
             ->first();
 
-        if(!$dev) {
+        if (!$dev) {
             return redirect('developers')
                 ->with('success', 'Developer has been successfully hidden.');
         }
 
-        return view('developers.find_contacts', compact('dev'));
+        $edit = false;
+
+        return view('developers.find_contacts', compact('dev', 'edit'));
+    }
+
+    public function setContacted($id)
+    {
+        $dev = AsDeveloper::findOrFail($id);
+
+        if (!$dev->email && !$dev->contact_url) {
+            abort(404, 'Developer does not have contact info');
+        }
+
+        $dev->checked_at = $dev->contacted_at = Carbon::now();
+        $dev->save();
+
+        return redirect()->back()
+            ->with('success', 'Developer has been successfully updated.');
+    }
+
+    public function setSignedUp($id)
+    {
+        $dev = AsDeveloper::findOrFail($id);
+
+        if (!$dev->contacted_at) {
+            abort(404, 'Developer has not been contacted');
+        }
+
+        $dev->signed_at = Carbon::now();
+        $dev->save();
+
+        return redirect()->back()
+            ->with('success', 'Developer has been successfully updated.');
+    }
+
+    public function delete($id)
+    {
+        $dev = AsDeveloper::findOrFail($id);
+        $dev->delete();
+
+        return redirect()->back()
+            ->with('success', 'Developer has been successfully deleted.');
     }
 
 }

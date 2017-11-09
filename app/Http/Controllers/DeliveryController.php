@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Contracts\AsDeveloper;
 use App\Contracts\Delivery;
 use App\Contracts\DeliveryEmail;
 use App\Contracts\Template;
@@ -25,17 +26,29 @@ class DeliveryController extends Controller
     {
         $delivery = ($request->get('copy_id')) ? Delivery::findOrFail($request->get('copy_id')) : new Delivery();
         $accounts = user()->accounts;
+        $recipients = [];
+
+
+        if ($request->get('developer_id')) {
+            $developer = AsDeveloper::find($request->get('developer_id'));
+            if ($developer) {
+                $recipients[] = $developer->email;
+            }
+        }
 
         if ($request->get('template_id')) {
             $template = Template::find($request->get('template_id'));
             if ($template) {
                 $delivery->subject = $template->subject;
-                $delivery->body = $template->body;
+                if ($developer) {
+                    $delivery->body = str_replace('{name}', $developer->contact_name, $template->body);
+                } else {
+                    $delivery->body = $template->body;
+                }
             }
-
         }
 
-        return view('delivery.create', compact('delivery', 'accounts'));
+        return view('delivery.create', compact('delivery', 'accounts', 'recipients'));
     }
 
     public function show(Delivery $delivery)
