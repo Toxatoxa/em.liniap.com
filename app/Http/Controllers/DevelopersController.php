@@ -52,7 +52,7 @@ class DevelopersController extends Controller
         $this->validate($request, [
             'name'          => 'required',
             'language_code' => 'required',
-            'email'         => 'email|sometimes',
+//            'email'         => 'email|sometimes',
         ]);
 
         $dev = AsDeveloper::findOrFail($id);
