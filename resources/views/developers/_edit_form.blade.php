@@ -90,6 +90,8 @@
                     Next
                 </button>
             @endif
+            <a href="{{ route('developers.delete', ['id' => $dev->id]) }}"
+               class="btn btn-danger btn-sm">d</a>
         </div>
     </div>
 </form>
