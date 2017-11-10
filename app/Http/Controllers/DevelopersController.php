@@ -37,7 +37,7 @@ class DevelopersController extends Controller
         $this->validate(request(), [
             'name'          => 'required',
             'language_code' => 'required',
-            'email'         => 'email',
+            'email'         => 'email|sometimes',
         ]);
 
         $attributes = request()->all();
