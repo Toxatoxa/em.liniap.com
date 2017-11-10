@@ -106,6 +106,7 @@ class DevelopersController extends Controller
         $dev = AsDeveloper::whereHas('applications', function ($query) {
             $query->where('country_code', 'ru');
         })
+            ->whereNotNull('site')
             ->whereNull('checked_at')
             ->orderBy('found_feed_id')
             ->first();
