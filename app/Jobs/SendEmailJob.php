@@ -2,8 +2,10 @@
 
 namespace App\Jobs;
 
+use App\Contracts\AsDeveloper;
 use App\Contracts\DeliveryEmail;
 use App\Mail\EmailToClient;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -43,5 +45,13 @@ class SendEmailJob implements ShouldQueue
         }
 
         Mail::to($email->recipient_email)->send(new EmailToClient($email));
+
+        if ($developer = AsDeveloper::where('email', $email->recipient_email)
+            ->whereNull('contacted_at')
+            ->first()
+        ) {
+            $developer->contacted_at = Carbon::now();
+            $developer->save();
+        }
     }
 }

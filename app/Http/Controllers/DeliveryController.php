@@ -27,6 +27,7 @@ class DeliveryController extends Controller
         $delivery = ($request->get('copy_id')) ? Delivery::findOrFail($request->get('copy_id')) : new Delivery();
         $accounts = user()->accounts;
         $recipients = [];
+        $developer = null;
 
 
         if ($request->get('developer_id')) {

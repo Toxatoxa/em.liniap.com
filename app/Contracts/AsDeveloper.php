@@ -31,6 +31,14 @@ class AsDeveloper extends Model
         'checked_at',
     ];
 
+    protected $dates = [
+        'created_at',
+        'checked_at',
+        'contacted_at',
+        'received_at',
+        'signed_at',
+    ];
+
     public function applications()
     {
         return $this->hasMany(AsApplication::class, 'developer_id');
