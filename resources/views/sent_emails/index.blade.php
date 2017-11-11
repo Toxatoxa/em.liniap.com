@@ -5,7 +5,9 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Sent Emails</div>
+                    <div class="panel-heading">Sent Emails
+                        <a href="{{route('delivery.create')}}">New</a>
+                    </div>
 
                     <div class="panel-body">
 

@@ -31,14 +31,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/developers/{id}/set_contacted', 'DevelopersController@setContacted')->name('developers.setContacted');
     Route::get('/developers/{id}/set_signed_up', 'DevelopersController@setSignedUp')->name('developers.setSignedUp');
     Route::get('/developers/{id}/delete', 'DevelopersController@delete')->name('developers.delete');
-//    Route::get('/developers/{id}/change_status/{status}', 'DevelopersController@changeStatus')->name('developers.changeStatus');
-
 
     Route::resource('/templates', 'TemplatesController');
     Route::post('/upload/image', 'UploadController@image');
 
     Route::get('sent_emails', 'SentEmailsController@index')->name('sentEmails.index');
-
 
     Route::post('/upload/images', 'UploadController@images');
 });

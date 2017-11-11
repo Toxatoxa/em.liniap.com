@@ -11,15 +11,8 @@ class DevelopersController extends Controller
 
     public function index()
     {
-//        $devs = AsDeveloper::whereHas('applications', function ($query) {
-//            $query->where('country_code', 'ru');
-//        })
-//            ->filter()
-//            ->orderBy('found_feed_id')
-//            ->paginate(20);
-
         $devs = AsDeveloper::filter()
-            ->orderBy('id')
+            ->orderBy('found_feed_id')
             ->paginate(20);
 
         $statuses = AsDeveloper::allStatuses();
@@ -37,7 +30,7 @@ class DevelopersController extends Controller
         $this->validate(request(), [
             'name'          => 'required',
             'language_code' => 'required',
-//            'email'         => 'email|sometimes',
+            'email'         => 'email|nullable',
         ]);
 
         $attributes = request()->all();
@@ -52,7 +45,7 @@ class DevelopersController extends Controller
         $this->validate($request, [
             'name'          => 'required',
             'language_code' => 'required',
-//            'email'         => 'email|sometimes',
+            'email'         => 'email|nullable',
         ]);
 
         $dev = AsDeveloper::findOrFail($id);
@@ -71,27 +64,6 @@ class DevelopersController extends Controller
             ->with('success', 'Developer has been successfully updated.');
 
     }
-
-    public function send($id)
-    {
-
-        return redirect()->back()
-            ->with('success', 'Developer has been successfully emailed.');
-    }
-
-//    public function changeStatus($id, $status)
-//    {
-//        if (!in_array($status, AsDeveloper::statuses())) {
-//            abort(404);
-//        }
-//
-//        $dev = AsDeveloper::findOrFail($id);
-//        $dev->status = $status;
-//        $dev->save();
-//
-//        return redirect()->back()
-//            ->with('success', 'Developer has been successfully hidden.');
-//    }
 
     public function edit($id)
     {

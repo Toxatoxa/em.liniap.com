@@ -23,10 +23,6 @@ class AddFieldsToAsDevelopersTable extends Migration
             $table->timestamp('signed_at')->nullable()->default(null)->after('received_at');
             $table->softDeletes();
         });
-
-//        Schema::table('delivery_emails', function (Blueprint $table) {
-//            $table->integer('developer_id')->unsigned()->nullable()->default(null)->after('recipient_email');
-//        });
     }
 
     /**
@@ -45,9 +41,5 @@ class AddFieldsToAsDevelopersTable extends Migration
             $table->dropColumn('signed_at');
             $table->dropColumn('deleted_at');
         });
-
-//        Schema::table('delivery_emails', function (Blueprint $table) {
-//            $table->dropColumn('developer_id');
-//        });
     }
 }

@@ -21,20 +21,20 @@ class Feed
     public static $feeds = [
         1 => 'new-apps-we-love',
         2 => 'new-games-we-love',
-        3 => 'top-free',
-        4 => 'top-free-ipad',
+        3 => 'top-paid',
+        4 => 'top-grossing-ipad',
         5 => 'top-grossing',
-        6 => 'top-grossing-ipad',
-        7 => 'top-paid',
+        6 => 'top-free',
+        7 => 'top-free-ipad',
     ];
 
     public static $feedNames = [
         1 => 'New Apps',
         2 => 'New Games',
-        3 => 'Top Free',
-        4 => 'Top Free iPad',
+        3 => 'Top Paid',
+        4 => 'Top Grossing iPad',
         5 => 'Top Grossing',
-        6 => 'Top Grossing iPad',
-        7 => 'Top Paid',
+        6 => 'Top Free',
+        7 => 'Top Free iPad',
     ];
 }
