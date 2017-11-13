@@ -11,6 +11,7 @@ class DeliveryEmail extends Model
     use SoftDeletes;
 
     protected $fillable = [
+        'template_id',
         'recipient_email',
         'sent_at',
     ];

@@ -28,6 +28,7 @@ class DeliveryController extends Controller
         $accounts = user()->accounts;
         $recipients = [];
         $developer = null;
+        $templateId = null;
 
 
         if ($request->get('developer_id')) {
@@ -41,6 +42,7 @@ class DeliveryController extends Controller
             $template = Template::find($request->get('template_id'));
             if ($template) {
                 $delivery->subject = $template->subject;
+                $templateId = $template->id;
                 if ($developer) {
                     $delivery->body = str_replace('{name}', $developer->contact_name, $template->body);
                 } else {
@@ -49,7 +51,7 @@ class DeliveryController extends Controller
             }
         }
 
-        return view('delivery.create', compact('delivery', 'accounts', 'recipients'));
+        return view('delivery.create', compact('delivery', 'accounts', 'recipients', 'templateId'));
     }
 
     public function show(Delivery $delivery)
@@ -96,6 +98,7 @@ class DeliveryController extends Controller
             $recipients = explode(',', $request->get('recipients'));
             foreach ($recipients as $recipient) {
                 $email = $delivery->emails()->create([
+                    'template_id'     => $request->get('template_id'),
                     'recipient_email' => $recipient
                 ]);
                 dispatch(new SendEmailJob($email->id));

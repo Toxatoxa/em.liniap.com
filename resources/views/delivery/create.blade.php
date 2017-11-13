@@ -67,6 +67,7 @@
 
                             <div class="form-group">
                                 <div class="col-sm-offset-3 col-sm-10">
+                                    <input type="hidden" name="template_id" value="{{$templateId}}">
                                     <button class="btn btn-success" type="submit">Send</button>
                                 </div>
                             </div>
