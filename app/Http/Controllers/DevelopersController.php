@@ -75,13 +75,18 @@ class DevelopersController extends Controller
 
     public function findContacts()
     {
-        $dev = AsDeveloper::whereHas('applications', function ($query) {
+        $query = AsDeveloper::whereHas('applications', function ($query) {
             $query->where('country_code', 'ru');
         })
             ->whereNotNull('site')
             ->whereNull('checked_at')
-            ->orderBy('found_feed_id')
-            ->first();
+            ->orderBy('found_feed_id');
+
+        if (request()->get('domain')) {
+            $query->where('site', 'like', '%.' . request()->get('domain') . '%');
+        }
+
+        $dev = $query->first();
 
         if (!$dev) {
             return redirect('developers')
