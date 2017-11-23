@@ -13,71 +13,71 @@
 
                         <div class="row">
                             {{--<div class="col-md-6">--}}
-                                {{--<h3>Info</h3>--}}
-                                {{--<form class="form-horizontal">--}}
-                                    {{--<div class="form-group">--}}
-                                        {{--<label class="col-sm-4 control-label">Sender</label>--}}
-                                        {{--<div class="col-sm-8">--}}
-                                            {{--<p class="form-control-static">{{$delivery->account->name}}</p>--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
-                                    {{--<div class="form-group">--}}
-                                        {{--<label class="col-sm-4 control-label">Subject</label>--}}
-                                        {{--<div class="col-sm-8">--}}
-                                            {{--<p class="form-control-static">{{$delivery->subject}}</p>--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
-                                    {{--<div class="form-group">--}}
-                                        {{--<label class="col-sm-4 control-label">Body</label>--}}
-                                        {{--<div class="col-sm-8">--}}
-                                            {{--<button type="button" class="btn btn-link" data-toggle="modal"--}}
-                                                    {{--data-target="#myModal">Show Text--}}
-                                            {{--</button>--}}
-                                            {{--<!-- Modal -->--}}
-                                            {{--<div id="myModal" class="modal fade" role="dialog">--}}
-                                                {{--<div class="modal-dialog modal-lg">--}}
+                            {{--<h3>Info</h3>--}}
+                            {{--<form class="form-horizontal">--}}
+                            {{--<div class="form-group">--}}
+                            {{--<label class="col-sm-4 control-label">Sender</label>--}}
+                            {{--<div class="col-sm-8">--}}
+                            {{--<p class="form-control-static">{{$delivery->account->name}}</p>--}}
+                            {{--</div>--}}
+                            {{--</div>--}}
+                            {{--<div class="form-group">--}}
+                            {{--<label class="col-sm-4 control-label">Subject</label>--}}
+                            {{--<div class="col-sm-8">--}}
+                            {{--<p class="form-control-static">{{$delivery->subject}}</p>--}}
+                            {{--</div>--}}
+                            {{--</div>--}}
+                            {{--<div class="form-group">--}}
+                            {{--<label class="col-sm-4 control-label">Body</label>--}}
+                            {{--<div class="col-sm-8">--}}
+                            {{--<button type="button" class="btn btn-link" data-toggle="modal"--}}
+                            {{--data-target="#myModal">Show Text--}}
+                            {{--</button>--}}
+                            {{--<!-- Modal -->--}}
+                            {{--<div id="myModal" class="modal fade" role="dialog">--}}
+                            {{--<div class="modal-dialog modal-lg">--}}
 
-                                                    {{--<!-- Modal content-->--}}
-                                                    {{--<div class="modal-content">--}}
-                                                        {{--<div class="modal-header">--}}
-                                                            {{--<button type="button" class="close"--}}
-                                                                    {{--data-dismiss="modal">&times;--}}
-                                                            {{--</button>--}}
-                                                            {{--<h4 class="modal-title">Body</h4>--}}
-                                                        {{--</div>--}}
-                                                        {{--<div class="modal-body">--}}
-                                                            {{--{!! $delivery->body !!}--}}
-                                                        {{--</div>--}}
-                                                    {{--</div>--}}
+                            {{--<!-- Modal content-->--}}
+                            {{--<div class="modal-content">--}}
+                            {{--<div class="modal-header">--}}
+                            {{--<button type="button" class="close"--}}
+                            {{--data-dismiss="modal">&times;--}}
+                            {{--</button>--}}
+                            {{--<h4 class="modal-title">Body</h4>--}}
+                            {{--</div>--}}
+                            {{--<div class="modal-body">--}}
+                            {{--{!! $delivery->body !!}--}}
+                            {{--</div>--}}
+                            {{--</div>--}}
 
-                                                {{--</div>--}}
-                                            {{--</div>--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
-                                    {{--<div class="form-group">--}}
-                                        {{--<label class="col-sm-4 control-label">Created At</label>--}}
-                                        {{--<div class="col-sm-8">--}}
-                                            {{--<p class="form-control-static">{{$delivery->created_at}}</p>--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
-                                    {{--<div class="form-group">--}}
-                                        {{--<label class="col-sm-4 control-label">Sent At</label>--}}
-                                        {{--<div class="col-sm-8">--}}
-                                            {{--<p class="form-control-static">{{($delivery->sent_at) ? $delivery->sent_at : '-'}}</p>--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
+                            {{--</div>--}}
+                            {{--</div>--}}
+                            {{--</div>--}}
+                            {{--</div>--}}
+                            {{--<div class="form-group">--}}
+                            {{--<label class="col-sm-4 control-label">Created At</label>--}}
+                            {{--<div class="col-sm-8">--}}
+                            {{--<p class="form-control-static">{{$delivery->created_at}}</p>--}}
+                            {{--</div>--}}
+                            {{--</div>--}}
+                            {{--<div class="form-group">--}}
+                            {{--<label class="col-sm-4 control-label">Sent At</label>--}}
+                            {{--<div class="col-sm-8">--}}
+                            {{--<p class="form-control-static">{{($delivery->sent_at) ? $delivery->sent_at : '-'}}</p>--}}
+                            {{--</div>--}}
+                            {{--</div>--}}
 
-                                    {{--<div class="form-group">--}}
-                                        {{--<label class="col-sm-4 control-label">Errors</label>--}}
-                                        {{--<div class="col-sm-8">--}}
-                                            {{--<p class="form-control-static">--}}
-                                                {{--<a href="{{route('delivery.errors', $delivery->id)}}">Show Errors</a>--}}
-                                                {{--<a href="{{route('delivery.resend', $delivery->id)}}">Re-send</a>--}}
-                                            {{--</p>--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
+                            {{--<div class="form-group">--}}
+                            {{--<label class="col-sm-4 control-label">Errors</label>--}}
+                            {{--<div class="col-sm-8">--}}
+                            {{--<p class="form-control-static">--}}
+                            {{--<a href="{{route('delivery.errors', $delivery->id)}}">Show Errors</a>--}}
+                            {{--<a href="{{route('delivery.resend', $delivery->id)}}">Re-send</a>--}}
+                            {{--</p>--}}
+                            {{--</div>--}}
+                            {{--</div>--}}
 
-                                {{--</form>--}}
+                            {{--</form>--}}
                             {{--</div>--}}
                             <div class="col-md-6">
                                 @include('sent_emails._statistic')
@@ -94,6 +94,7 @@
                                     <th>Received At</th>
                                     <th>Opened At</th>
                                     <th>Clicked At</th>
+                                    <th>Template</th>
                                     <th>Errors</th>
                                 </tr>
                                 </thead>
@@ -111,6 +112,7 @@
                                         <td class="s_received_at">{{($email->received_at) ? $email->received_at : '-'}}</td>
                                         <td class="s_opened_at">{{($email->opened_at) ? $email->opened_at : '-'}}</td>
                                         <td class="s_clicked_at">{{($email->clicked_at) ? $email->clicked_at : '-'}}</td>
+                                        <td>{{($email->template_id) ? $email->template_id : '-'}}</td>
                                         <td class="s_error_at">
                                             <ul>
                                                 @if($email->error_at)
