@@ -53,6 +53,7 @@
                             <a href="{{ route('developers.index', ['language_code' => 'ru', 'status' => 'has_contacts']) }}">Developers</a>
                         </li>
                         <li><a href="{{ route('developers.findContacts') }}">Finding Contacts</a></li>
+                        <li><a target="_blank" href="https://liniap.com/admin">Liniap</a></li>
                     @endif
                 </ul>
 
