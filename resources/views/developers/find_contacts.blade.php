@@ -65,12 +65,12 @@
                         </div>
 
 
-                        <hr>
-                        <div style="margin-top: 20px">
-                            <iframe src="{{$dev->site}}" frameborder="0" width="100%" height="500px">
+                        {{--<hr>--}}
+                        {{--<div style="margin-top: 20px">--}}
+                            {{--<iframe src="{{$dev->site}}" frameborder="0" width="100%" height="500px">--}}
 
-                            </iframe>
-                        </div>
+                            {{--</iframe>--}}
+                        {{--</div>--}}
 
                     </div>
                 </div>

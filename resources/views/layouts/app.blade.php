@@ -46,14 +46,18 @@
                 <!-- Left Side Of Navbar -->
                 <ul class="nav navbar-nav">
                     &nbsp;@if (!Auth::guest())
-                        <li><a href="{{ route('sentEmails.index') }}">Sent Emails</a></li>
-                        {{--<li><a href="{{ route('delivery.create') }}">Create</a></li>--}}
-                        {{--<li><a href="{{ route('delivery.index') }}">Deliveries</a></li>--}}
-                        <li>
-                            <a href="{{ route('developers.index', ['language_code' => 'ru', 'status' => 'has_contacts']) }}">Developers</a>
-                        </li>
-                        <li><a href="{{ route('developers.findContacts') }}">Finding Contacts</a></li>
-                        <li><a target="_blank" href="https://liniap.com/admin">Liniap</a></li>
+                        @if(user()->role_id === 1)
+                            <li><a href="{{ route('sentEmails.index') }}">Sent Emails</a></li>
+                            {{--<li><a href="{{ route('delivery.create') }}">Create</a></li>--}}
+                            {{--<li><a href="{{ route('delivery.index') }}">Deliveries</a></li>--}}
+                            <li>
+                                <a href="{{ route('developers.index', ['language_code' => 'ru', 'status' => 'has_contacts']) }}">Developers</a>
+                            </li>
+                            <li><a href="{{ route('developers.findContacts') }}">Finding Contacts</a></li>
+                            <li><a target="_blank" href="https://liniap.com/admin">Liniap</a></li>
+                        @else
+                            <li><a href="{{ route('developers.findContacts') }}">Finding Contacts</a></li>
+                        @endif
                     @endif
                 </ul>
 
@@ -71,8 +75,10 @@
                             </a>
 
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="{{ route('templates.index') }}">Templates</a></li>
-                                <li><a href="{{ route('accounts.index') }}">Accounts</a></li>
+                                @if(user()->role_id === 1)
+                                    <li><a href="{{ route('templates.index') }}">Templates</a></li>
+                                    <li><a href="{{ route('accounts.index') }}">Accounts</a></li>
+                                @endif
                                 <li>
                                     <a href="{{ route('logout') }}"
                                        onclick="event.preventDefault();

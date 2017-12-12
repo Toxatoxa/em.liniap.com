@@ -26,7 +26,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('/accounts', 'AccountsController');
 
     Route::resource('/developers', 'DevelopersController', ['only' => ['index', 'update', 'edit', 'create', 'store']]);
-    Route::get('/developers/find_contacts', 'DevelopersController@findContacts')->name('developers.findContacts');
+    Route::get('/find_contacts', 'DevelopersController@findContacts')->name('developers.findContacts');
     Route::get('/developers/{id}/send', 'DevelopersController@send')->name('developers.send');
     Route::get('/developers/{id}/set_contacted', 'DevelopersController@setContacted')->name('developers.setContacted');
     Route::get('/developers/{id}/set_signed_up', 'DevelopersController@setSignedUp')->name('developers.setSignedUp');
