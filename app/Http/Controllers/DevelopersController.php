@@ -76,7 +76,7 @@ class DevelopersController extends Controller
     public function findContacts()
     {
         $query = AsDeveloper::whereHas('applications', function ($query) {
-            $query->where('country_code', 'ru');
+//            $query->where('country_code', 'ru');
         })
             ->whereNotNull('site')
             ->whereNull('checked_at')
