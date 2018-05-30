@@ -86,6 +86,13 @@ class DevelopersController extends Controller
             $query->where('site', 'like', '%.' . request()->get('domain') . '%');
         }
 
+        if (request()->get('paid')) {
+            $query->whereHas('applications', function ($query) {
+                $query->whereNotNull('price');
+                $query->where('price', '>', 0);
+            });
+        }
+
         $dev = $query->first();
 
         if (!$dev) {

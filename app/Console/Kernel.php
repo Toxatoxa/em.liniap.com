@@ -17,6 +17,7 @@ class Kernel extends ConsoleKernel
         Commands\StartSendEmails::class,
         Commands\CheckItunesRssFeed::class,
         Commands\GetDeveloperWebSite::class,
+        Commands\CheckApps::class,
     ];
 
     /**
