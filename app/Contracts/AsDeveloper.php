@@ -56,6 +56,13 @@ class AsDeveloper extends Model
                 ->orWhere('site', 'like', '%' . request()->get('search') . '%');
         }
 
+        if (request()->get('paid')) {
+            $query->whereHas('applications', function ($query) {
+                $query->whereNotNull('price');
+                $query->where('price', '>', 0);
+            });
+        }
+
         if (request()->get('language_code')) {
             $query->where('language_code', request()->get('language_code'));
         }
