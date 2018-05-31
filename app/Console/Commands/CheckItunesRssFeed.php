@@ -8,6 +8,7 @@ use App\Contracts\AsDeveloper;
 use App\Contracts\AsGenre;
 use App\Contracts\Feed;
 use Illuminate\Console\Command;
+use GuzzleHttp\Client;
 
 class CheckItunesRssFeed extends Command
 {
@@ -29,7 +30,6 @@ class CheckItunesRssFeed extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
      */
     public function handle()
     {
@@ -40,12 +40,23 @@ class CheckItunesRssFeed extends Command
 
         foreach ($feedTypes as $feedId => $feedString) {
             foreach ($countries as $country) {
-                $url = 'https://rss.itunes.apple.com/api/v1/' . $country->code . '/ios-apps/' . $feedString . '/all/200/explicit.json';
-                $response = json_decode(file_get_contents($url), true);
+                $url = 'https://rss.itunes.apple.com/api/v1/' . $country->code . '/ios-apps/' . $feedString . '/200/explicit.json';
+
+                try {
+                    $response = json_decode(file_get_contents($url), true);
+                } catch (\Exception $e) {
+                    echo 'continue' . "\n";
+                    continue;
+                }
+
+                echo 'next' . "\n";
+
 
                 if (!$response || !isset($response['feed']['results'])) {
                     continue;
                 }
+
+                $appIds = [];
 
                 foreach ($response['feed']['results'] as $result) {
                     $id = $result['id'];
@@ -64,14 +75,19 @@ class CheckItunesRssFeed extends Command
                         ]);
                     }
 
+//                    $price = self::getApplicationPriceById($id);
+
                     $application = $developer->applications()->create([
                         'as_id'         => $id,
                         'name'          => $result['name'],
                         'url'           => $result['url'],
                         'country_code'  => $country->code,
+//                        'price'         => $price,
                         'found_feed_id' => $feedId,
                         'release_date'  => $result['releaseDate'],
                     ]);
+
+                    array_push($appIds, $id);
 
                     if (isset($result['genres']) && $result['genres']) {
                         $appGenres = [];
@@ -89,8 +105,30 @@ class CheckItunesRssFeed extends Command
                     }
                 }
 
+                self::updateAppsPrice($appIds);
                 sleep(2);
             }
+
+            //
+
+        }
+    }
+
+    public static function updateAppsPrice($ids)
+    {
+        $ids = implode(",", $ids);
+
+        $client = new Client();
+
+        $res = $client->get('https://itunes.apple.com/lookup?id=' . $ids);
+
+        $responseArray = json_decode($res->getBody(), true);
+
+        foreach ($responseArray['results'] as $result) {
+
+            $app = AsApplication::where('as_id', $result['trackId'])->first();
+            $app->price = $result['price'];
+            $app->save();
         }
     }
 }
