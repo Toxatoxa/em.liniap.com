@@ -34,6 +34,9 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('get:dev_site')
             ->everyTenMinutes();
+
+        $schedule->command('check:messages')
+            ->everyMinute();
     }
 
     /**
