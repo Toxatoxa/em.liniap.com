@@ -45,12 +45,8 @@ class CheckItunesRssFeed extends Command
                 try {
                     $response = json_decode(file_get_contents($url), true);
                 } catch (\Exception $e) {
-                    echo 'continue' . "\n";
                     continue;
                 }
-
-                echo 'next' . "\n";
-
 
                 if (!$response || !isset($response['feed']['results'])) {
                     continue;
@@ -75,14 +71,11 @@ class CheckItunesRssFeed extends Command
                         ]);
                     }
 
-//                    $price = self::getApplicationPriceById($id);
-
                     $application = $developer->applications()->create([
                         'as_id'         => $id,
                         'name'          => $result['name'],
                         'url'           => $result['url'],
                         'country_code'  => $country->code,
-//                        'price'         => $price,
                         'found_feed_id' => $feedId,
                         'release_date'  => $result['releaseDate'],
                     ]);
