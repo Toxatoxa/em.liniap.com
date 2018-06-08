@@ -65,7 +65,7 @@ class CheckMessages extends Command
                     'body'    => $items['body'],
                 ]);
 
-                if (!$i && $lastMessage->created_at <= Carbon::now()->subHour()) {
+                if (!$i && (!$lastMessage || $lastMessage->created_at <= Carbon::now()->subHour())) {
                     Mail::to('anton.antonov@sidekick-content.com')->send(new EmailToAnton());
                 }
                 $i++;
