@@ -26,35 +26,53 @@ class GetDeveloperWebSite extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
      */
     public function handle()
     {
-        $developer = AsDeveloper::with('applications')->whereNull('site')->first();
+        $developers = AsDeveloper::with('applications')
+            ->whereNull('site')
+            ->whereNull('checked_at')
+            ->whereHas('applications', function ($query) {
+                $query->where('price', '>', 0);
+            })
+            ->limit(100)
+            ->get();
 
-        if (!$developer) {
+        if (!$developers) {
             return;
         }
 
-        foreach ($developer->applications as $application) {
-            $client = new Client();
-            $crawler = $client->request('GET', $application->url);
 
-            $a = $crawler->filter('.app-links a')->first();
-            if ($a->count()) {
-                $link = (string) trim($a->attr('href'));
-                if ($link) {
-                    $developer->site = $link;
-                    $developer->save();
-                    break;
+        $bar = $this->output->createProgressBar(count($developers));
+
+
+        foreach ($developers as $developer) {
+            $foundSite = false;
+
+            foreach ($developer->applications as $application) {
+                $client = new Client();
+                $crawler = $client->request('GET', $application->url);
+                $a = $crawler->filter('ul.inline-list--app-extensions a')->first();
+                if ($a->count()) {
+                    $link = (string) trim($a->attr('href'));
+                    if ($link) {
+                        $developer->site .= ' ' . $link;
+                        $developer->save();
+                        $foundSite = true;
+
+                        $this->info('Dev #' . $developer->id . ' URL:' . $developer->site);
+                    }
                 }
             }
 
+            if (!$foundSite) {
+                $developer->site = '';
+                $developer->save();
+            }
+
+            $bar->advance();
         }
 
-        if ($developer->site === null) {
-            $developer->site = '';
-            $developer->save();
-        }
+        $bar->finish();
     }
 }
